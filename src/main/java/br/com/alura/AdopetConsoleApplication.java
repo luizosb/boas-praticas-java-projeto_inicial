@@ -85,13 +85,7 @@ public class AdopetConsoleApplication {
 
             HttpClient client = HttpClient.newHttpClient();
             String uri = "http://localhost:8080/abrigos/" + idOuNome + "/pets";
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(uri))
-                    .header("Content-Type", "application/json")
-                    .method("POST", HttpRequest.BodyPublishers.ofString(json.toString()))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = postResponse(uri, json, client);
             int statusCode = response.statusCode();
             String responseBody = response.body();
             if (statusCode == 200) {
@@ -114,11 +108,7 @@ public class AdopetConsoleApplication {
 
         HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos/" +idOuNome +"/pets";
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = getResponse(uri, client);
         int statusCode = response.statusCode();
         if (statusCode == 404 || statusCode == 500) {
             System.out.println("ID ou nome não cadastrado!");
@@ -140,11 +130,7 @@ public class AdopetConsoleApplication {
     private static void listarAbrigo() throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = getResponse(uri, client);
         String responseBody = response.body();
         JsonArray jsonArray = JsonParser.parseString(responseBody).getAsJsonArray();
         System.out.println("Abrigos cadastrados:");
@@ -171,13 +157,7 @@ public class AdopetConsoleApplication {
 
         HttpClient client = HttpClient.newHttpClient();
         String uri = "http://localhost:8080/abrigos";
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .header("Content-Type", "application/json")
-                .method("POST", HttpRequest.BodyPublishers.ofString(json.toString()))
-                .build();
-
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = postResponse(uri, json, client);
         int statusCode = response.statusCode();
         String responseBody = response.body();
         if (statusCode == 200) {
@@ -187,5 +167,23 @@ public class AdopetConsoleApplication {
             System.out.println("Erro ao cadastrar o abrigo:");
             System.out.println(responseBody);
         }
+    }
+
+    private static HttpResponse<String> postResponse(String uri, JsonObject json, HttpClient client) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .header("Content-Type", "application/json")
+                .method("POST", HttpRequest.BodyPublishers.ofString(json.toString()))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private static HttpResponse<String> getResponse(String uri, HttpClient client) throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
