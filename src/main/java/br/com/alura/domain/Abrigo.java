@@ -14,6 +14,10 @@ public class Abrigo {
         this.email = email;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }

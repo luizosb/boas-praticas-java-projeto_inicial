@@ -20,6 +20,10 @@ public class Pet {
         this.peso = peso;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getNome() {
         return nome;
     }
