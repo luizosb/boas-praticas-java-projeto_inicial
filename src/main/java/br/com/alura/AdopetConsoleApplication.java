@@ -11,10 +11,6 @@ public class AdopetConsoleApplication {
     public static void main(String[] args) {
 
         CommandExecutor command = new CommandExecutor();
-
-        ClientHTTPConfiguration client = new ClientHTTPConfiguration();
-        PetService petService = new PetService(client);
-
         System.out.println("##### BOAS VINDAS AO SISTEMA ADOPET CONSOLE #####");
         try {
             int opcaoEscolhida = 0;
@@ -34,9 +30,9 @@ public class AdopetConsoleApplication {
                 } else if (opcaoEscolhida == 2) {
                     command.executeCommand(new CadastrarAbrigoCommand());
                 } else if (opcaoEscolhida == 3) {
-                    petService.listarPetsDoAbrigo();
+                    command.executeCommand(new ListarPetsCommand());
                 } else if (opcaoEscolhida == 4) {
-                    petService.importarPets();
+                    command.executeCommand(new ImportarPetsCommand());
                 } else if (opcaoEscolhida == 5) {
                     break;
                 } else {
