@@ -53,4 +53,8 @@ public class Abrigo {
     public void setPets(Pet[] pets) {
         this.pets = pets;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
